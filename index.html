@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -34,6 +35,8 @@
 
 <div class="container">
 
+<!-- Statistik -->
+
 <div class="stats-container">
 
 <div class="card stat-card">
@@ -46,14 +49,22 @@
 
 </div>
 
+<!-- Pencarian -->
+
 <div class="card">
 
-<h2>Pencarian Dokumen</h2>
+<h2>Pencarian Data</h2>
+
+<input
+type="text"
+id="cariLokasi"
+placeholder="Cari Lokasi..."
+onkeyup="filterData()">
 
 <input
 type="text"
 id="cariDepartemen"
-placeholder="Cari Lokasi Departemen..."
+placeholder="Cari Departemen..."
 onkeyup="filterData()">
 
 <input
@@ -65,7 +76,7 @@ onkeyup="filterData()">
 <div class="button-group">
 
 <a href="form.html">
-<button>
+<button type="button">
 + Input Dokumen
 </button>
 </a>
@@ -74,9 +85,15 @@ onkeyup="filterData()">
 Cetak PDF
 </button>
 
+<button onclick="logoutAdmin()">
+Logout
+</button>
+
 </div>
 
 </div>
+
+<!-- Tabel -->
 
 <div class="card">
 
@@ -89,15 +106,27 @@ Cetak PDF
 <thead>
 
 <tr>
+
 <th>No</th>
+
 <th>No Dokumen</th>
+
 <th>Tanggal Masuk</th>
+
+<th>Lokasi</th>
+
 <th>Departemen</th>
+
 <th>Diajukan Oleh</th>
+
 <th>Tanggal Dokumen</th>
+
 <th>Keperluan</th>
+
 <th>Nominal</th>
+
 <th>Aksi</th>
+
 </tr>
 
 </thead>

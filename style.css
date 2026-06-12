@@ -10,11 +10,15 @@ background:#f4f6f9;
 color:#333;
 }
 
+/* =========================
+HEADER
+========================= */
+
 header{
 background:#003366;
 color:white;
 padding:15px 20px;
-box-shadow:0 2px 5px rgba(0,0,0,0.2);
+box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
 .logo-area{
@@ -26,10 +30,10 @@ gap:15px;
 .logo-area img{
 width:70px;
 height:70px;
-object-fit:contain;
 background:white;
 padding:5px;
 border-radius:10px;
+object-fit:contain;
 }
 
 .logo-area h1{
@@ -41,11 +45,19 @@ font-size:14px;
 opacity:.9;
 }
 
+/* =========================
+CONTAINER
+========================= */
+
 .container{
 width:95%;
 max-width:1400px;
 margin:20px auto;
 }
+
+/* =========================
+CARD
+========================= */
 
 .card{
 background:white;
@@ -54,6 +66,15 @@ border-radius:12px;
 box-shadow:0 2px 10px rgba(0,0,0,.08);
 margin-bottom:20px;
 }
+
+.card h2{
+color:#003366;
+margin-bottom:15px;
+}
+
+/* =========================
+STATISTIK
+========================= */
 
 .stats-container{
 display:flex;
@@ -67,28 +88,26 @@ text-align:center;
 
 .stat-card h1{
 font-size:50px;
-color:#003366;
 margin-top:10px;
+color:#003366;
 }
 
-h2{
-margin-bottom:15px;
-color:#003366;
-}
+/* =========================
+FORM
+========================= */
 
 label{
 display:block;
+margin-top:12px;
+margin-bottom:6px;
 font-weight:600;
-margin-top:10px;
-margin-bottom:5px;
 }
 
 input{
 width:100%;
 padding:12px;
 border:1px solid #ccc;
-border-radius:6px;
-margin-bottom:10px;
+border-radius:8px;
 font-size:14px;
 }
 
@@ -97,19 +116,23 @@ outline:none;
 border-color:#0066cc;
 }
 
+/* =========================
+BUTTON
+========================= */
+
 .button-group{
 display:flex;
 gap:10px;
 flex-wrap:wrap;
-margin-top:15px;
+margin-top:20px;
 }
 
 button{
 background:#0066cc;
 color:white;
 border:none;
-padding:12px 18px;
-border-radius:6px;
+padding:12px 20px;
+border-radius:8px;
 cursor:pointer;
 font-size:14px;
 transition:.3s;
@@ -118,6 +141,10 @@ transition:.3s;
 button:hover{
 background:#004c99;
 }
+
+/* =========================
+TABLE
+========================= */
 
 .table-wrapper{
 overflow-x:auto;
@@ -145,6 +172,54 @@ tr:nth-child(even){
 background:#f8f8f8;
 }
 
+/* =========================
+LOGIN
+========================= */
+
+.login-container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+padding:20px;
+}
+
+.login-card{
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 2px 15px rgba(0,0,0,.1);
+width:100%;
+max-width:400px;
+}
+
+.login-logo{
+display:block;
+width:100px;
+margin:0 auto 15px;
+}
+
+.login-card h2{
+text-align:center;
+color:#003366;
+margin-bottom:10px;
+}
+
+.login-card p{
+text-align:center;
+margin-bottom:15px;
+}
+
+.error-text{
+color:red;
+margin-top:10px;
+text-align:center;
+}
+
+/* =========================
+NOTIFIKASI SUKSES
+========================= */
+
 .success-message{
 display:none;
 text-align:center;
@@ -154,6 +229,7 @@ color:#155724;
 padding:20px;
 border-radius:10px;
 margin-bottom:20px;
+animation:fadeIn .5s;
 }
 
 .check-icon{
@@ -163,9 +239,31 @@ color:#28a745;
 margin-bottom:10px;
 }
 
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(-10px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* =========================
+LINK
+========================= */
+
 a{
 text-decoration:none;
 }
+
+/* =========================
+RESPONSIVE MOBILE
+========================= */
 
 @media(max-width:768px){
 
@@ -206,6 +304,10 @@ padding:8px;
 
 .stat-card h1{
 font-size:36px;
+}
+
+.login-card{
+padding:20px;
 }
 
 }

@@ -1,28 +1,100 @@
-// =========================
-// SISTEM DOKUMEN PT
-// =========================
+// ===============================
+// SISTEM DOKUMEN PT V2
+// ===============================
 
 let dokumen =
 JSON.parse(localStorage.getItem("dokumen")) || [];
 
-// Jalankan otomatis
-setTanggalHariIni();
-tampilkanDashboard();
+// ===============================
+// CEK LOGIN DASHBOARD
+// ===============================
 
-// =========================
-// TANGGAL HARI INI OTOMATIS
-// =========================
+if (
+window.location.pathname.includes("index.html") ||
+window.location.pathname.endsWith("/sistem-dokumen-pt/") ||
+window.location.pathname.endsWith("/")
+) {
+
+const login =
+localStorage.getItem("loginAdmin");
+
+if (login !== "true") {
+
+window.location.href = "login.html";
+
+}
+
+}
+
+// ===============================
+// LOGIN ADMIN
+// ===============================
+
+function loginAdmin(){
+
+const username =
+document.getElementById("username").value;
+
+const password =
+document.getElementById("password").value;
+
+if(
+username === "admin" &&
+password === "admin123"
+){
+
+localStorage.setItem(
+"loginAdmin",
+"true"
+);
+
+window.location.href =
+"index.html";
+
+}
+else{
+
+document.getElementById(
+"errorLogin"
+).innerText =
+"Username atau Password Salah";
+
+}
+
+}
+
+// ===============================
+// LOGOUT
+// ===============================
+
+function logoutAdmin(){
+
+localStorage.removeItem(
+"loginAdmin"
+);
+
+window.location.href =
+"login.html";
+
+}
+
+// ===============================
+// TANGGAL HARI INI
+// ===============================
 
 function setTanggalHariIni(){
 
 const input =
-document.getElementById("tanggalMasuk");
+document.getElementById(
+"tanggalMasuk"
+);
 
 if(!input) return;
 
 const today = new Date();
 
-const yyyy = today.getFullYear();
+const yyyy =
+today.getFullYear();
 
 const mm =
 String(today.getMonth()+1)
@@ -37,9 +109,9 @@ input.value =
 
 }
 
-// =========================
-// NOMOR DOKUMEN OTOMATIS
-// =========================
+// ===============================
+// NOMOR DOKUMEN
+// ===============================
 
 function generateNomorDokumen(){
 
@@ -47,16 +119,17 @@ const tahun =
 new Date().getFullYear();
 
 const nomor =
-String(dokumen.length + 1)
-.padStart(4,"0");
+String(
+dokumen.length + 1
+).padStart(4,"0");
 
 return `DOC-${tahun}-${nomor}`;
 
 }
 
-// =========================
+// ===============================
 // FORMAT RUPIAH
-// =========================
+// ===============================
 
 function formatRupiah(angka){
 
@@ -66,31 +139,49 @@ Number(angka)
 
 }
 
-// =========================
-// SIMPAN DOKUMEN
-// =========================
+// ===============================
+// TAMBAH DOKUMEN
+// ===============================
 
 function tambahDokumen(){
 
 const tanggalMasuk =
-document.getElementById("tanggalMasuk").value;
+document.getElementById(
+"tanggalMasuk"
+).value;
+
+const lokasi =
+document.getElementById(
+"lokasi"
+).value.trim();
 
 const departemen =
-document.getElementById("departemen").value.trim();
+document.getElementById(
+"departemen"
+).value.trim();
 
 const diajukan =
-document.getElementById("diajukan").value.trim();
+document.getElementById(
+"diajukan"
+).value.trim();
 
 const tanggalDokumen =
-document.getElementById("tanggalDokumen").value;
+document.getElementById(
+"tanggalDokumen"
+).value;
 
 const keperluan =
-document.getElementById("keperluan").value.trim();
+document.getElementById(
+"keperluan"
+).value.trim();
 
 const nominal =
-document.getElementById("nominal").value;
+document.getElementById(
+"nominal"
+).value;
 
 if(
+!lokasi ||
 !departemen ||
 !diajukan ||
 !tanggalDokumen ||
@@ -112,6 +203,7 @@ nomorDokumen:
 generateNomorDokumen(),
 
 tanggalMasuk,
+lokasi,
 departemen,
 diajukan,
 tanggalDokumen,
@@ -120,23 +212,28 @@ nominal
 
 };
 
-dokumen.push(dataBaru);
+dokumen.push(
+dataBaru
+);
 
 localStorage.setItem(
 "dokumen",
 JSON.stringify(dokumen)
 );
 
-// =========================
-// TAMPILKAN PESAN SUKSES
-// =========================
+// ===============================
+// PESAN SUKSES
+// ===============================
 
 const pesan =
-document.getElementById("pesanSukses");
+document.getElementById(
+"pesanSukses"
+);
 
 if(pesan){
 
-pesan.style.display = "block";
+pesan.style.display =
+"block";
 
 window.scrollTo({
 top:0,
@@ -145,43 +242,62 @@ behavior:"smooth"
 
 setTimeout(()=>{
 
-pesan.style.display = "none";
+pesan.style.display =
+"none";
 
 },4000);
 
 }
 
-// =========================
+// ===============================
 // RESET FORM
-// =========================
+// ===============================
 
-document.getElementById("departemen").value = "";
+document.getElementById(
+"lokasi"
+).value = "";
 
-document.getElementById("diajukan").value = "";
+document.getElementById(
+"departemen"
+).value = "";
 
-document.getElementById("tanggalDokumen").value = "";
+document.getElementById(
+"diajukan"
+).value = "";
 
-document.getElementById("keperluan").value = "";
+document.getElementById(
+"tanggalDokumen"
+).value = "";
 
-document.getElementById("nominal").value = "";
+document.getElementById(
+"keperluan"
+).value = "";
+
+document.getElementById(
+"nominal"
+).value = "";
 
 setTanggalHariIni();
 
 }
 
-// =========================
+// ===============================
 // DASHBOARD
-// =========================
+// ===============================
 
 function tampilkanDashboard(
 data = dokumen
 ){
 
 const tabel =
-document.getElementById("dataDokumen");
+document.getElementById(
+"dataDokumen"
+);
 
 const total =
-document.getElementById("totalDokumen");
+document.getElementById(
+"totalDokumen"
+);
 
 if(total){
 
@@ -196,30 +312,33 @@ tabel.innerHTML = "";
 
 if(data.length === 0){
 
-tabel.innerHTML = `
-<tr>
-<td colspan="9"
+tabel.innerHTML =
+
+`<tr>
+<td colspan="10"
 style="text-align:center;">
 Belum ada data
 </td>
-</tr>
-`;
+</tr>`;
 
 return;
 
 }
 
-data.forEach((item,index)=>{
+data.forEach(
+(item,index)=>{
 
-tabel.innerHTML += `
+tabel.innerHTML +=
 
-<tr>
+`<tr>
 
 <td>${index+1}</td>
 
 <td>${item.nomorDokumen}</td>
 
 <td>${item.tanggalMasuk}</td>
+
+<td>${item.lokasi}</td>
 
 <td>${item.departemen}</td>
 
@@ -242,17 +361,15 @@ Hapus
 
 </td>
 
-</tr>
-
-`;
+</tr>`;
 
 });
 
 }
 
-// =========================
+// ===============================
 // HAPUS DATA
-// =========================
+// ===============================
 
 function hapusData(index){
 
@@ -263,7 +380,10 @@ confirm(
 
 if(!konfirmasi) return;
 
-dokumen.splice(index,1);
+dokumen.splice(
+index,
+1
+);
 
 localStorage.setItem(
 "dokumen",
@@ -274,30 +394,43 @@ tampilkanDashboard();
 
 }
 
-// =========================
+// ===============================
 // FILTER DATA
-// =========================
+// ===============================
 
 function filterData(){
+
+const lokasi =
+document
+.getElementById(
+"cariLokasi"
+)?.value
+.toLowerCase() || "";
 
 const departemen =
 document
 .getElementById(
 "cariDepartemen"
-)
-.value
-.toLowerCase();
+)?.value
+.toLowerCase() || "";
 
 const keperluan =
 document
 .getElementById(
 "cariKeperluan"
-)
-.value
-.toLowerCase();
+)?.value
+.toLowerCase() || "";
 
 const hasil =
-dokumen.filter(item =>
+
+dokumen.filter(
+item =>
+
+item.lokasi
+.toLowerCase()
+.includes(lokasi)
+
+&&
 
 item.departemen
 .toLowerCase()
@@ -317,13 +450,15 @@ hasil
 
 }
 
-// =========================
+// ===============================
 // CETAK PDF
-// =========================
+// ===============================
 
 function cetakPDF(){
 
-if(dokumen.length === 0){
+if(
+dokumen.length === 0
+){
 
 alert(
 "Tidak ada data untuk dicetak"
@@ -352,7 +487,7 @@ doc.text(
 doc.setFontSize(10);
 
 doc.text(
-"Data Dokumen Perusahaan",
+"Laporan Dokumen",
 14,
 22
 );
@@ -365,6 +500,7 @@ head:[[
 "No",
 "No Dokumen",
 "Tgl Masuk",
+"Lokasi",
 "Departemen",
 "Diajukan",
 "Tgl Dokumen",
@@ -376,16 +512,27 @@ body:
 
 dokumen.map(
 (item,index)=>[
+
 index+1,
+
 item.nomorDokumen,
+
 item.tanggalMasuk,
+
+item.lokasi,
+
 item.departemen,
+
 item.diajukan,
+
 item.tanggalDokumen,
+
 item.keperluan,
+
 formatRupiah(
 item.nominal
 )
+
 ]
 ),
 
@@ -404,3 +551,18 @@ doc.save(
 );
 
 }
+
+// ===============================
+// AUTO RUN
+// ===============================
+
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+setTanggalHariIni();
+
+tampilkanDashboard();
+
+}
+);
