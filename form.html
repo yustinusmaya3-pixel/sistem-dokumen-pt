@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Form Pengisian Dokumen</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo-area">
+
+<img src="assets/logo.png" alt="Logo PT">
+
+<div>
+<h1>Sistem Dokumen PT</h1>
+<p>Form Pengisian Dokumen</p>
+</div>
+
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
+<h2>Input Dokumen Baru</h2>
+
+<div id="pesanSukses" class="success-message">
+
+<div class="check-icon">✓</div>
+
+<h3>Terima Kasih</h3>
+
+<p>Dokumen berhasil disimpan.</p>
+
+</div>
+
+<label>Tanggal Masuk</label>
+
+<input
+type="text"
+id="tanggalMasuk"
+readonly>
+
+<label>Lokasi Departemen</label>
+
+<input
+type="text"
+id="departemen"
+placeholder="Contoh: Finance">
+
+<label>Diajukan Oleh</label>
+
+<input
+type="text"
+id="diajukan"
+placeholder="Nama Pengaju">
+
+<label>Tanggal Dokumen</label>
+
+<input
+type="date"
+id="tanggalDokumen">
+
+<label>Keperluan</label>
+
+<input
+type="text"
+id="keperluan"
+placeholder="Contoh: Pembelian ATK">
+
+<label>Nominal</label>
+
+<input
+type="number"
+id="nominal"
+placeholder="Contoh: 500000">
+
+<div class="button-group">
+
+<button onclick="tambahDokumen()">
+Simpan Dokumen
+</button>
+
+<a href="index.html">
+<button type="button">
+Kembali Dashboard
+</button>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
