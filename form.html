@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
 
 <meta charset="UTF-8">
@@ -18,7 +17,7 @@
 
 <div class="logo-area">
 
-<img src="assets/logo.png" alt="Logo PT">
+<img src="assets/logo.png">
 
 <div>
 <h1>Sistem Dokumen PT</h1>
@@ -35,20 +34,27 @@
 
 <h2>Input Dokumen Baru</h2>
 
-<div id="pesanSukses" class="success-message">
+<div
+id="pesanSukses"
+class="success-message"
+style="display:none;">
 
-<div class="check-icon">✓</div>
+<div class="check-icon">
+✓
+</div>
 
 <h3>Terima Kasih</h3>
 
-<p>Dokumen berhasil disimpan.</p>
+<p>
+Dokumen berhasil disimpan.
+</p>
 
 </div>
 
 <label>Tanggal Masuk</label>
 
 <input
-type="text"
+type="date"
 id="tanggalMasuk"
 readonly>
 
@@ -70,8 +76,7 @@ placeholder="Contoh: Finance">
 
 <input
 type="text"
-id="diajukan"
-placeholder="Nama Pengaju">
+id="diajukan">
 
 <label>Tanggal Dokumen</label>
 
@@ -83,15 +88,13 @@ id="tanggalDokumen">
 
 <input
 type="text"
-id="keperluan"
-placeholder="Contoh: Pembelian ATK">
+id="keperluan">
 
 <label>Nominal</label>
 
 <input
 type="number"
-id="nominal"
-placeholder="Contoh: 500000">
+id="nominal">
 
 <div class="button-group">
 
@@ -99,7 +102,7 @@ placeholder="Contoh: 500000">
 Simpan Dokumen
 </button>
 
-<a href="index.html">
+<a href="login.html">
 <button type="button">
 Dashboard Admin
 </button>
@@ -111,8 +114,8 @@ Dashboard Admin
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
 
 </body>
-
 </html>

@@ -22,11 +22,14 @@
 
 <div class="logo-area">
 
-<img src="assets/logo.png" alt="Logo PT">
+<img src="assets/logo.png">
 
 <div>
+
 <h1>Sistem Dokumen PT</h1>
+
 <p>Dashboard Monitoring Dokumen</p>
+
 </div>
 
 </div>
@@ -35,21 +38,19 @@
 
 <div class="container">
 
-<!-- Statistik -->
-
 <div class="stats-container">
 
 <div class="card stat-card">
 
 <h3>Total Dokumen</h3>
 
-<h1 id="totalDokumen">0</h1>
+<h1 id="totalDokumen">
+0
+</h1>
 
 </div>
 
 </div>
-
-<!-- Pencarian -->
 
 <div class="card">
 
@@ -75,12 +76,6 @@ onkeyup="filterData()">
 
 <div class="button-group">
 
-<a href="form.html">
-<button type="button">
-+ Input Dokumen
-</button>
-</a>
-
 <button onclick="cetakPDF()">
 Cetak PDF
 </button>
@@ -92,8 +87,6 @@ Logout
 </div>
 
 </div>
-
-<!-- Tabel -->
 
 <div class="card">
 
@@ -108,23 +101,14 @@ Logout
 <tr>
 
 <th>No</th>
-
 <th>No Dokumen</th>
-
 <th>Tanggal Masuk</th>
-
 <th>Lokasi</th>
-
 <th>Departemen</th>
-
-<th>Diajukan Oleh</th>
-
+<th>Diajukan</th>
 <th>Tanggal Dokumen</th>
-
 <th>Keperluan</th>
-
 <th>Nominal</th>
-
 <th>Aksi</th>
 
 </tr>
@@ -143,6 +127,7 @@ Logout
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
 
 </body>

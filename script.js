@@ -1,76 +1,90 @@
-// ===============================
-// SISTEM DOKUMEN PT V2
-// ===============================
+// ==========================
+// SUPABASE CONFIG
+// ==========================
 
-let dokumen =
-JSON.parse(localStorage.getItem("dokumen")) || [];
+const SUPABASE_URL =
+"https://vltxxwrduxpvaktovzen.supabase.co";
 
-// ===============================
-// CEK LOGIN DASHBOARD
-// ===============================
+const SUPABASE_KEY =
+"sb_publishable_iL9PorzJ7Rg73mktCGFpsg_I6xV-_p2";
 
-if (
-window.location.pathname.includes("index.html") ||
-window.location.pathname.endsWith("/sistem-dokumen-pt/") ||
-window.location.pathname.endsWith("/")
-) {
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
-const login =
-localStorage.getItem("loginAdmin");
-
-if (login !== "true") {
-
-window.location.href = "login.html";
-
-}
-
-}
-
-// ===============================
+// ==========================
 // LOGIN ADMIN
-// ===============================
+// ==========================
 
 function loginAdmin(){
 
 const username =
-document.getElementById("username").value;
+document.getElementById("username")?.value;
 
 const password =
-document.getElementById("password").value;
+document.getElementById("password")?.value;
 
 if(
-username === "admin" &&
-password === "admin123"
+username==="admin" &&
+password==="admin123"
 ){
 
 localStorage.setItem(
-"loginAdmin",
+"adminLogin",
 "true"
 );
 
 window.location.href =
 "index.html";
 
+}else{
+
+const err =
+document.getElementById("errorLogin");
+
+if(err){
+
+err.innerText =
+"Username atau Password salah";
+
 }
-else{
-
-document.getElementById(
-"errorLogin"
-).innerText =
-"Username atau Password Salah";
 
 }
 
 }
 
-// ===============================
+// ==========================
+// CEK LOGIN
+// ==========================
+
+if(
+window.location.pathname.includes("index.html")
+){
+
+const login =
+localStorage.getItem(
+"adminLogin"
+);
+
+if(login!=="true"){
+
+window.location.href =
+"login.html";
+
+}
+
+}
+
+// ==========================
 // LOGOUT
-// ===============================
+// ==========================
 
 function logoutAdmin(){
 
 localStorage.removeItem(
-"loginAdmin"
+"adminLogin"
 );
 
 window.location.href =
@@ -78,72 +92,64 @@ window.location.href =
 
 }
 
-// ===============================
-// TANGGAL HARI INI
-// ===============================
+// ==========================
+// TANGGAL MASUK OTOMATIS
+// ==========================
 
-function setTanggalHariIni(){
+window.onload = () => {
 
-const input =
+const tanggalMasuk =
 document.getElementById(
 "tanggalMasuk"
 );
 
-if(!input) return;
+if(tanggalMasuk){
 
-const today = new Date();
+const today =
+new Date();
 
-const yyyy =
-today.getFullYear();
-
-const mm =
-String(today.getMonth()+1)
-.padStart(2,"0");
-
-const dd =
-String(today.getDate())
-.padStart(2,"0");
-
-input.value =
-`${yyyy}-${mm}-${dd}`;
+tanggalMasuk.value =
+today.toISOString()
+.split("T")[0];
 
 }
 
-// ===============================
+loadData();
+
+};
+
+// ==========================
 // NOMOR DOKUMEN
-// ===============================
+// ==========================
 
-function generateNomorDokumen(){
+function generateNomor(){
 
-const tahun =
-new Date().getFullYear();
-
-const nomor =
-String(
-dokumen.length + 1
-).padStart(4,"0");
-
-return `DOC-${tahun}-${nomor}`;
+return "DOC-" +
+Date.now();
 
 }
 
-// ===============================
+// ==========================
 // FORMAT RUPIAH
-// ===============================
+// ==========================
 
-function formatRupiah(angka){
+function formatRupiah(nilai){
 
-return "Rp " +
-Number(angka)
-.toLocaleString("id-ID");
+return new Intl.NumberFormat(
+"id-ID",
+{
+style:"currency",
+currency:"IDR"
+}
+).format(nilai);
 
 }
 
-// ===============================
-// TAMBAH DOKUMEN
-// ===============================
+// ==========================
+// SIMPAN DOKUMEN
+// ==========================
 
-function tambahDokumen(){
+async function tambahDokumen(){
 
 const tanggalMasuk =
 document.getElementById(
@@ -153,17 +159,17 @@ document.getElementById(
 const lokasi =
 document.getElementById(
 "lokasi"
-).value.trim();
+).value;
 
 const departemen =
 document.getElementById(
 "departemen"
-).value.trim();
+).value;
 
 const diajukan =
 document.getElementById(
 "diajukan"
-).value.trim();
+).value;
 
 const tanggalDokumen =
 document.getElementById(
@@ -173,7 +179,7 @@ document.getElementById(
 const keperluan =
 document.getElementById(
 "keperluan"
-).value.trim();
+).value;
 
 const nominal =
 document.getElementById(
@@ -184,159 +190,139 @@ if(
 !lokasi ||
 !departemen ||
 !diajukan ||
-!tanggalDokumen ||
-!keperluan ||
-!nominal
+!keperluan
 ){
 
 alert(
-"Lengkapi semua data terlebih dahulu"
+"Lengkapi semua data"
 );
 
 return;
 
 }
 
-const dataBaru = {
+const nomorDokumen =
+generateNomor();
 
-nomorDokumen:
-generateNomorDokumen(),
+const { error } =
+await supabaseClient
+.from("dokumen")
+.insert([
+{
+nomor_dokumen:
+nomorDokumen,
 
+tanggal_masuk:
 tanggalMasuk,
+
+lokasi:
 lokasi,
+
+departemen:
 departemen,
+
+diajukan:
 diajukan,
+
+tanggal_dokumen:
 tanggalDokumen,
+
+keperluan:
 keperluan,
-nominal
 
-};
+nominal:
+Number(nominal)
+}
+]);
 
-dokumen.push(
-dataBaru
+if(error){
+
+alert(
+"Gagal simpan : "
++ error.message
 );
 
-localStorage.setItem(
-"dokumen",
-JSON.stringify(dokumen)
-);
+return;
 
-// ===============================
-// PESAN SUKSES
-// ===============================
+}
 
-const pesan =
 document.getElementById(
 "pesanSukses"
+).style.display="block";
+
+document.querySelectorAll(
+"input"
+).forEach(
+input=>{
+
+if(
+input.id!=="tanggalMasuk"
+){
+input.value="";
+}
+
+}
 );
-
-if(pesan){
-
-pesan.style.display =
-"block";
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
 
 setTimeout(()=>{
 
-pesan.style.display =
-"none";
+document.getElementById(
+"pesanSukses"
+).style.display="none";
 
-},4000);
+},3000);
 
 }
 
-// ===============================
-// RESET FORM
-// ===============================
+// ==========================
+// LOAD DATA
+// ==========================
 
-document.getElementById(
-"lokasi"
-).value = "";
+async function loadData(){
 
-document.getElementById(
-"departemen"
-).value = "";
-
-document.getElementById(
-"diajukan"
-).value = "";
-
-document.getElementById(
-"tanggalDokumen"
-).value = "";
-
-document.getElementById(
-"keperluan"
-).value = "";
-
-document.getElementById(
-"nominal"
-).value = "";
-
-setTanggalHariIni();
-
-}
-
-// ===============================
-// DASHBOARD
-// ===============================
-
-function tampilkanDashboard(
-data = dokumen
-){
-
-const tabel =
+const tbody =
 document.getElementById(
 "dataDokumen"
 );
 
-const total =
-document.getElementById(
-"totalDokumen"
-);
+if(!tbody) return;
 
-if(total){
+const { data,error } =
+await supabaseClient
+.from("dokumen")
+.select("*")
+.order("id",
+{
+ascending:false
+});
 
-total.innerText =
-dokumen.length;
+if(error){
 
-}
-
-if(!tabel) return;
-
-tabel.innerHTML = "";
-
-if(data.length === 0){
-
-tabel.innerHTML =
-
-`<tr>
-<td colspan="10"
-style="text-align:center;">
-Belum ada data
-</td>
-</tr>`;
+console.log(error);
 
 return;
 
 }
 
+tbody.innerHTML="";
+
+document.getElementById(
+"totalDokumen"
+).innerText =
+data.length;
+
 data.forEach(
 (item,index)=>{
 
-tabel.innerHTML +=
+tbody.innerHTML += `
 
-`<tr>
+<tr>
 
 <td>${index+1}</td>
 
-<td>${item.nomorDokumen}</td>
+<td>${item.nomor_dokumen}</td>
 
-<td>${item.tanggalMasuk}</td>
+<td>${item.tanggal_masuk}</td>
 
 <td>${item.lokasi}</td>
 
@@ -344,7 +330,7 @@ tabel.innerHTML +=
 
 <td>${item.diajukan}</td>
 
-<td>${item.tanggalDokumen}</td>
+<td>${item.tanggal_dokumen}</td>
 
 <td>${item.keperluan}</td>
 
@@ -353,7 +339,8 @@ tabel.innerHTML +=
 <td>
 
 <button
-onclick="hapusData(${index})">
+class="button-danger"
+onclick="hapusData(${item.id})">
 
 Hapus
 
@@ -361,140 +348,188 @@ Hapus
 
 </td>
 
-</tr>`;
+</tr>
 
-});
+`;
+
+}
+);
 
 }
 
-// ===============================
+// ==========================
 // HAPUS DATA
-// ===============================
+// ==========================
 
-function hapusData(index){
-
-const konfirmasi =
-confirm(
-"Yakin ingin menghapus data?"
-);
-
-if(!konfirmasi) return;
-
-dokumen.splice(
-index,
-1
-);
-
-localStorage.setItem(
-"dokumen",
-JSON.stringify(dokumen)
-);
-
-tampilkanDashboard();
-
-}
-
-// ===============================
-// FILTER DATA
-// ===============================
-
-function filterData(){
-
-const lokasi =
-document
-.getElementById(
-"cariLokasi"
-)?.value
-.toLowerCase() || "";
-
-const departemen =
-document
-.getElementById(
-"cariDepartemen"
-)?.value
-.toLowerCase() || "";
-
-const keperluan =
-document
-.getElementById(
-"cariKeperluan"
-)?.value
-.toLowerCase() || "";
-
-const hasil =
-
-dokumen.filter(
-item =>
-
-item.lokasi
-.toLowerCase()
-.includes(lokasi)
-
-&&
-
-item.departemen
-.toLowerCase()
-.includes(departemen)
-
-&&
-
-item.keperluan
-.toLowerCase()
-.includes(keperluan)
-
-);
-
-tampilkanDashboard(
-hasil
-);
-
-}
-
-// ===============================
-// CETAK PDF
-// ===============================
-
-function cetakPDF(){
+async function hapusData(id){
 
 if(
-dokumen.length === 0
-){
+!confirm(
+"Yakin hapus data?"
+)
+) return;
+
+const { error } =
+await supabaseClient
+.from("dokumen")
+.delete()
+.eq("id",id);
+
+if(error){
 
 alert(
-"Tidak ada data untuk dicetak"
+"Gagal hapus"
 );
 
 return;
 
 }
 
+loadData();
+
+}
+
+// ==========================
+// FILTER
+// ==========================
+
+function filterData(){
+
+let lokasi =
+document
+.getElementById(
+"cariLokasi"
+)
+.value
+.toUpperCase();
+
+let departemen =
+document
+.getElementById(
+"cariDepartemen"
+)
+.value
+.toUpperCase();
+
+let keperluan =
+document
+.getElementById(
+"cariKeperluan"
+)
+.value
+.toUpperCase();
+
+let table =
+document.querySelector(
+"table"
+);
+
+let tr =
+table.getElementsByTagName(
+"tr"
+);
+
+for(let i=1;i<tr.length;i++){
+
+let tdLokasi =
+tr[i].getElementsByTagName(
+"td"
+)[3];
+
+let tdDept =
+tr[i].getElementsByTagName(
+"td"
+)[4];
+
+let tdKeperluan =
+tr[i].getElementsByTagName(
+"td"
+)[7];
+
+if(
+tdLokasi &&
+tdDept &&
+tdKeperluan
+){
+
+let cocok =
+
+tdLokasi.innerText
+.toUpperCase()
+.includes(lokasi)
+
+&&
+
+tdDept.innerText
+.toUpperCase()
+.includes(departemen)
+
+&&
+
+tdKeperluan.innerText
+.toUpperCase()
+.includes(keperluan);
+
+tr[i].style.display =
+cocok ? "" : "none";
+
+}
+
+}
+
+}
+
+// ==========================
+// CETAK PDF
+// ==========================
+
+function cetakPDF(){
+
 const { jsPDF } =
 window.jspdf;
 
 const doc =
-new jsPDF(
-"landscape"
-);
+new jsPDF();
 
 doc.setFontSize(16);
 
 doc.text(
-"SISTEM DOKUMEN PT",
+"Laporan Dokumen PT",
 14,
 15
 );
 
-doc.setFontSize(10);
+let rows = [];
 
-doc.text(
-"Laporan Dokumen",
-14,
-22
+document
+.querySelectorAll(
+"#dataDokumen tr"
+)
+.forEach(
+row=>{
+
+let data=[];
+
+row
+.querySelectorAll(
+"td"
+)
+.forEach(
+cell=>{
+
+data.push(
+cell.innerText
+);
+
+}
+);
+
+rows.push(data);
+
+}
 );
 
 doc.autoTable({
-
-startY:30,
 
 head:[[
 "No",
@@ -508,61 +543,14 @@ head:[[
 "Nominal"
 ]],
 
-body:
-
-dokumen.map(
-(item,index)=>[
-
-index+1,
-
-item.nomorDokumen,
-
-item.tanggalMasuk,
-
-item.lokasi,
-
-item.departemen,
-
-item.diajukan,
-
-item.tanggalDokumen,
-
-item.keperluan,
-
-formatRupiah(
-item.nominal
+body:rows.map(
+r=>r.slice(0,9)
 )
-
-]
-),
-
-styles:{
-fontSize:8
-},
-
-headStyles:{
-fillColor:[0,51,102]
-}
 
 });
 
 doc.save(
-"Laporan-Dokumen-PT.pdf"
+"laporan-dokumen.pdf"
 );
 
 }
-
-// ===============================
-// AUTO RUN
-// ===============================
-
-document.addEventListener(
-"DOMContentLoaded",
-function(){
-
-setTanggalHariIni();
-
-tampilkanDashboard();
-
-}
-);
